@@ -3,41 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faleproxy - Replace Yale with Fale</title>
+    <title>Faleproxy - Transform Web Content</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <div class="background-gradient"></div>
+    
+    <nav class="navbar">
         <div class="container">
-            <h1>Faleproxy</h1>
-            <form id="url-form">
-                <div class="form-group">
-                    <input type="url" id="url-input" placeholder="Enter URL (e.g., https://www.yale.edu)" required>
-                    <button type="submit">Fetch & Replace</button>
-                </div>
-            </form>
-        </div>
-    </header>
-
-    <main class="container">
-        <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>Fetching and processing content...</p>
-        </div>
-
-        <div id="error-message" class="hidden"></div>
-
-        <div id="result-container" class="hidden">
-            <div id="info-bar">
-                <p>Original URL: <a id="original-url" target="_blank" rel="noopener noreferrer"></a></p>
-                <p>Page Title: <span id="page-title"></span></p>
+            <div class="nav-brand">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="brand-name">Faleproxy</span>
             </div>
-            <div id="content-display"></div>
         </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="badge">
+                        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Transform Any Website</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Replace <span class="highlight">Yale</span> with <span class="highlight-alt">Fale</span>
+                    </h1>
+                 
+                    <form id="url-form" class="search-form">
+                        <div class="search-container">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 13C13.866 13 17 9.866 17 6C17 2.13401 13.866 -1 10 -1C6.13401 -1 3 2.13401 3 6C3 9.866 6.13401 13 10 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 21L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input 
+                                type="url" 
+                                id="url-input" 
+                                placeholder="Enter any URL (e.g., https://www.yale.edu)" 
+                                required
+                                autocomplete="off"
+                            >
+                            <button type="submit" class="submit-btn">
+                                <span>Transform</span>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Lightning Fast</h3>
+                            <p>Instant content transformation</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔒</div>
+                            <h3>Secure</h3>
+                            <p>Sandboxed iframe display</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Accurate</h3>
+                            <p>Case-insensitive matching</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <div class="container">
+                <div id="loading" class="hidden">
+                    <div class="loading-card">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Fetching and transforming content...</p>
+                        <p class="loading-subtext">This may take a few moments</p>
+                    </div>
+                </div>
+
+                <div id="error-message" class="hidden"></div>
+
+                <div id="result-container" class="hidden">
+                    <div class="result-header">
+                        <h2>Transformed Content</h2>
+                        <div id="info-bar">
+                            <div class="info-item">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 13C13.866 13 17 9.866 17 6C17 2.13401 13.866 -1 10 -1C6.13401 -1 3 2.13401 3 6C3 9.866 6.13401 13 10 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 21L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Original URL:</span>
+                                <a id="original-url" target="_blank" rel="noopener noreferrer"></a>
+                            </div>
+                            <div class="info-item">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Page Title:</span>
+                                <span id="page-title"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content-display"></div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="container">
-        <p>Faleproxy - Created on March 26, 2025</p>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2025 Faleproxy. Built with Node.js, Express & Cheerio.</p>
+            </div>
+        </div>
     </footer>
 
     <script src="script.js"></script>

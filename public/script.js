@@ -8,6 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalUrlElement = document.getElementById('original-url');
     const pageTitleElement = document.getElementById('page-title');
 
+    // Add smooth scroll behavior
+    const smoothScrollToResults = () => {
+        setTimeout(() => {
+            const resultsSection = document.querySelector('.results-section');
+            if (resultsSection) {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    };
+
     urlForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -18,10 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Show loading indicator
+        // Show loading indicator with smooth transition
         loadingElement.classList.remove('hidden');
         resultContainer.classList.add('hidden');
         errorMessage.classList.add('hidden');
+        smoothScrollToResults();
         
         try {
             const response = await fetch('/fetch', {
@@ -57,20 +68,28 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Adjust iframe height to match content
             iframe.onload = function() {
-                iframe.style.height = iframeDocument.body.scrollHeight + 'px';
-                
-                // Make sure links open in a new tab
-                const links = iframeDocument.querySelectorAll('a');
-                links.forEach(link => {
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                });
+                try {
+                    iframe.style.height = iframeDocument.body.scrollHeight + 'px';
+                    
+                    // Make sure links open in a new tab
+                    const links = iframeDocument.querySelectorAll('a');
+                    links.forEach(link => {
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                    });
+                } catch (err) {
+                    // Handle cross-origin errors gracefully
+                    console.log('Could not access iframe content:', err);
+                }
             };
             
-            // Show result container
+            // Show result container with animation
+            loadingElement.classList.add('hidden');
             resultContainer.classList.remove('hidden');
+            smoothScrollToResults();
         } catch (error) {
             showError(error.message);
+            smoothScrollToResults();
         } finally {
             // Hide loading indicator
             loadingElement.classList.add('hidden');
@@ -78,7 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     function showError(message) {
-        errorMessage.textContent = message;
+        errorMessage.textContent = '⚠️ ' + message;
         errorMessage.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
     }
+
+    // Add input validation feedback
+    urlInput.addEventListener('input', () => {
+        if (urlInput.validity.valid) {
+            urlInput.style.borderColor = '';
+        }
+    });
+
+    // Clear error on new input
+    urlInput.addEventListener('focus', () => {
+        errorMessage.classList.add('hidden');
+    });
 });
