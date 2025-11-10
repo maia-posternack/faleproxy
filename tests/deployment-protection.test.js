@@ -19,7 +19,7 @@ describe('Deployment Protection', () => {
   });
 
   // UNCOMMENT THIS TEST TO SIMULATE A FAILURE AND TEST DEPLOYMENT PROTECTION
-  // test('INTENTIONAL FAILURE - Remove before merging', () => {
-  //   expect(true).toBe(false);
-  // });
+  test('INTENTIONAL FAILURE - Remove before merging', () => {
+    expect(true).toBe(false);
+  });
 });
