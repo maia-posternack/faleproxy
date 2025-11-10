@@ -1,5 +1,28 @@
 # Testing CI/CD Pipeline
 
+## Important: Disable Vercel Auto-Deployments
+
+By default, Vercel deploys ALL branches automatically, bypassing your CI checks. To ensure tests must pass before deployment:
+
+### Step 1: Disable Vercel's Automatic Deployments
+
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Git**
+3. Under **Production Branch**, keep it as `main` or `master`
+4. Under **Deploy Hooks**, disable:
+   - ❌ **Automatically deploy all branches** (or set to "Preview" only)
+5. **Enable**: ✅ **Wait for CI checks to pass before deploying**
+6. Save changes
+
+### Step 2: Verify GitHub Actions is the Only Deployment Method
+
+After disabling auto-deployments:
+- Vercel will NOT deploy automatically on push
+- Only your GitHub Actions workflow will trigger deployments
+- Tests MUST pass before deployment happens
+
+---
+
 ## Method 1: Test with Intentional Failure
 
 1. **Create a feature branch:**
