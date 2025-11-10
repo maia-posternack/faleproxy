@@ -19,16 +19,30 @@ Go to: `https://github.com/YOUR_USERNAME/faleproxy/actions`
    - Name: `VERCEL_TOKEN`
    - Value: (paste your Vercel token)
 
-### 3️⃣ Disable Vercel Auto-Deploy
+### 3️⃣ Disable Vercel Auto-Deploy ⚠️ CRITICAL
+
+**Why:** Vercel deploys automatically on every push, ignoring your tests!
 
 Go to Vercel Dashboard → Your Project → **Settings** → **Git**
 
-Add this to **"Ignored Build Step"**:
+#### Option A: Add Ignored Build Step (Easiest)
+
+Scroll to **"Ignored Build Step"** and enter:
 ```bash
-if [ "$VERCEL_GIT_COMMIT_REF" != "main" ] && [ "$VERCEL_GIT_COMMIT_REF" != "master" ]; then exit 0; else exit 1; fi
+exit 0
 ```
 
-This prevents Vercel from deploying automatically (let GitHub Actions handle it).
+This tells Vercel to skip all automatic builds.
+
+#### Option B: Disconnect GitHub Integration (Most Reliable)
+
+1. In **Settings** → **Git**
+2. Click **"Disconnect"** under GitHub Integration
+3. Confirm disconnection
+
+**After this:** Only GitHub Actions can deploy (using `VERCEL_TOKEN`)
+
+📖 **Detailed guide:** See `docs/DISABLE_VERCEL_AUTO_DEPLOY.md`
 
 ---
 

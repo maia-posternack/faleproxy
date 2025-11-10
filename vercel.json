@@ -12,7 +12,11 @@
       "dest": "/app.js"
     }
   ],
+  "git": {
+    "deploymentEnabled": false
+  },
   "github": {
+    "enabled": false,
     "silent": true,
     "autoJobCancelation": true
   }
