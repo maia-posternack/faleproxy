@@ -18,8 +18,8 @@ describe('Deployment Protection', () => {
     expect(true).toBe(true);
   });
 
-  //UNCOMMENT THIS TEST TO SIMULATE A FAILURE AND TEST DEPLOYMENT PROTECTION
-  test('INTENTIONAL FAILURE - Remove before merging', () => {
-     expect(true).toBe(false);
-   });
+  // UNCOMMENT THIS TEST TO SIMULATE A FAILURE AND TEST DEPLOYMENT PROTECTION
+  // test('INTENTIONAL FAILURE - Remove before merging', () => {
+  //   expect(true).toBe(false);
+  // });
 });

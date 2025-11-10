@@ -11,5 +11,9 @@
       "src": "/(.*)",
       "dest": "/app.js"
     }
-  ]
+  ],
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  }
 }

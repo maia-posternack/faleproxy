@@ -1,0 +1,99 @@
+# 🚀 Deployment Setup Checklist
+
+Your CI/CD workflow is **already configured** to block production deployments when tests fail!
+
+## Quick Start: 3 Steps to Enable
+
+### 1️⃣ Enable GitHub Actions
+
+Go to: `https://github.com/YOUR_USERNAME/faleproxy/actions`
+
+- If you see "Workflows disabled", click **"Enable workflows"**
+- Or go to **Settings** → **Actions** → **General** → Enable all actions
+
+### 2️⃣ Add Vercel Token Secret
+
+1. Get token: https://vercel.com/account/tokens (create new token)
+2. Add to GitHub: **Settings** → **Secrets and variables** → **Actions**
+3. Create secret:
+   - Name: `VERCEL_TOKEN`
+   - Value: (paste your Vercel token)
+
+### 3️⃣ Disable Vercel Auto-Deploy
+
+Go to Vercel Dashboard → Your Project → **Settings** → **Git**
+
+Add this to **"Ignored Build Step"**:
+```bash
+if [ "$VERCEL_GIT_COMMIT_REF" != "main" ] && [ "$VERCEL_GIT_COMMIT_REF" != "master" ]; then exit 0; else exit 1; fi
+```
+
+This prevents Vercel from deploying automatically (let GitHub Actions handle it).
+
+---
+
+## ✅ Your Workflow Protection
+
+Your `.github/workflows/ci.yml` already has:
+
+```yaml
+deploy:
+  needs: test              # Waits for tests
+  if: |
+    success() &&           # Only if tests pass
+    (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+                           # Only on main/master
+```
+
+### What This Means:
+
+- ✅ Tests run on Node.js 18.x **AND** 20.x
+- ✅ **ALL** tests must pass on **ALL** versions
+- ✅ If **any** test fails → deployment **SKIPPED**
+- ✅ Only main/master branch → production deployment
+- ✅ Pull requests → tests run, no deployment
+
+---
+
+## 🧪 Test the Protection
+
+### Option 1: Test on Feature Branch (Safe)
+
+```bash
+git checkout -b test-protection
+# Uncomment failing test in tests/deployment-protection.test.js
+git add tests/deployment-protection.test.js
+git commit -m "test: verify deployment protection"
+git push origin test-protection
+# Create PR and watch Actions tab - deploy should be SKIPPED
+```
+
+### Option 2: Check GitHub Actions
+
+1. Go to: `https://github.com/YOUR_USERNAME/faleproxy/actions`
+2. Push any commit to main
+3. Watch the workflow:
+   - ✓ test (18.x)
+   - ✓ test (20.x)
+   - ✓ deploy (only runs if both tests pass)
+
+---
+
+## 📚 Detailed Documentation
+
+- **Full Setup Guide**: `docs/ENABLE_GITHUB_ACTIONS.md`
+- **Testing Guide**: `docs/TESTING_CI.md`
+- **Test File**: `tests/deployment-protection.test.js`
+
+---
+
+## 🎯 Current Status
+
+- ✅ Workflow file configured
+- ✅ Test protection enabled
+- ✅ Coverage reports uploaded
+- ⏳ **TODO**: Enable GitHub Actions
+- ⏳ **TODO**: Add VERCEL_TOKEN secret
+- ⏳ **TODO**: Disable Vercel auto-deploy
+
+Once you complete the 3 steps above, your deployment protection will be fully active! 🛡️
