@@ -2,7 +2,7 @@ name: Faleproxy CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ '**' ]  # All branches
   pull_request:
     branches: [ main, master ]
 
@@ -65,3 +65,86 @@ jobs:
       
     - name: Deploy Project Artifacts to Vercel
       run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      
+  deploy-preview:
+    needs: test
+    if: |
+      success() &&
+      github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+      
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Build Project Artifacts
+      run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Deploy Project Artifacts to Vercel (Preview)
+      id: deploy
+      run: |
+        url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+        echo "url=$url" >> $GITHUB_OUTPUT
+        echo "Preview URL: $url"
+        
+    - name: Comment Preview URL on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const url = '${{ steps.deploy.outputs.url }}';
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🚀 Preview Deployment Ready!\n\n✅ Tests passed\n🔗 Preview URL: ${url}\n\n*Deployed from commit ${{ github.sha }}*`
+          })
+          
+  deploy-preview-branch:
+    needs: test
+    if: |
+      success() &&
+      github.event_name == 'push' &&
+      github.ref != 'refs/heads/main' &&
+      github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+      
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Build Project Artifacts
+      run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      
+    - name: Deploy Project Artifacts to Vercel (Preview)
+      run: |
+        url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+        echo "Preview URL: $url"

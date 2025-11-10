@@ -106,8 +106,19 @@ git push origin test-protection
 - ✅ Workflow file configured
 - ✅ Test protection enabled
 - ✅ Coverage reports uploaded
+- ✅ Preview deployments enabled
 - ⏳ **TODO**: Enable GitHub Actions
 - ⏳ **TODO**: Add VERCEL_TOKEN secret
 - ⏳ **TODO**: Disable Vercel auto-deploy
+
+## 🚀 New: Preview Deployments
+
+Your workflow now supports automatic preview deployments:
+
+- **Feature branches** → Get preview URL in Actions logs
+- **Pull requests** → Get preview URL + automatic comment on PR
+- **Main branch** → Production deployment
+
+📖 **Full guide:** See `docs/PREVIEW_DEPLOYMENTS.md`
 
 Once you complete the 3 steps above, your deployment protection will be fully active! 🛡️
